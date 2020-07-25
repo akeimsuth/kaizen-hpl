@@ -9,6 +9,7 @@ import Upload from './components/Upload';
 
 const Wrapper = styled.div`
   padding: 24px;
+
 `;
 
 const Container = styled.div`
@@ -28,6 +29,11 @@ const Header = styled.div`
     line-height: var(--space-52);
     color: var(--color-gray-700);
   }
+
+  .row{
+    display: flex;
+    flex-direction: row;
+  }
 `;
 
 const Sidebar = styled.aside`
@@ -38,6 +44,50 @@ const Sidebar = styled.aside`
 const MainContent = styled.div`
   /* background-color: var(--color-red-300); */
   grid-column: 2 / span 3;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+        width: var(--space-6); 
+        height:var(--space-6);
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        box-shadow: none;
+        border-radius: var(--space-6);
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: var(--color-transparent);
+        border-radius: var(--space-6);
+    }
+
+    .submit{
+      border:0;
+      outline:0;
+      padding: var(--space-12) var(--space-40);
+      background-color: var(--color-blue-300);
+      color: var(--color-white);
+      font-size: var(--font-16);
+      border-radius: var(--space-8);
+      margin-left: 1rem;
+      cursor: pointer;
+      animation: fade-in ease-in 1s;
+
+      :hover{
+        background-color: var(--color-blue-500);
+      }
+    }
+
+    @keyframes fade-in {
+    0%{
+      opacity: 0;
+    }
+    100%{
+      opacity: 1;
+    }
+  }
 `;
 
 const Footer = styled.div`
@@ -62,6 +112,14 @@ const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   animation: fade-in ease-in 1s;
+
+  .header{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: var(--font-18);
+    line-height: var(--space-20);
+    color: var(--color-gray-700);
+    font-weight: normal;
+  }
 
   .row{
     display: flex;
@@ -161,12 +219,76 @@ function App() {
   const [reference, setReference] = useState(false);
   const [agreement, setAgreement] = useState(false);
 
+  const changeApplication = () => {
+    setApplication(true);
+    setProduct(false);
+    setEmployment(false);
+    setGross(false);
+    setExpense(false);
+    setReference(false);
+    setAgreement(false);
+}
+const changeProduct = () => {
+    setApplication(false);
+    setProduct(true);
+    setEmployment(false);
+    setGross(false);
+    setExpense(false);
+    setReference(false);
+    setAgreement(false);
+}
+const changeEmployment = () => {
+    setApplication(false);
+    setProduct(false);
+    setEmployment(true);
+    setGross(false);
+    setExpense(false);
+    setReference(false);
+    setAgreement(false);
+}
+const changeGross = () => {
+    setApplication(false);
+    setProduct(false);
+    setEmployment(false);
+    setGross(true);
+    setExpense(false);
+    setReference(false);
+    setAgreement(false);
+}
+const changeExpense = () => {
+    setApplication(false);
+    setProduct(false);
+    setEmployment(false);
+    setGross(false);
+    setExpense(true);
+    setReference(false);
+    setAgreement(false);
+}
+const changeReferences = () => {
+    setApplication(false);
+    setProduct(false);
+    setEmployment(false);
+    setGross(false);
+    setExpense(false);
+    setReference(true);
+    setAgreement(false);
+}
+const changeAgreement = () => {
+    setApplication(false);
+    setProduct(false);
+    setEmployment(false);
+    setGross(false);
+    setExpense(false);
+    setReference(false);
+    setAgreement(true);
+}
+
   return (
       <Wrapper>
         <Container>
          <Header>
-           <h1>Webdealsja Hire Purchase Loan Application</h1>
-           <Requirements/>
+              <h1>Webdealsja Hire Purchase Loan Application</h1>
+              <Requirements/>
          </Header>
          <Sidebar>
            <Menu application={application} setApplication={setApplication} 
@@ -180,16 +302,46 @@ function App() {
 
          <MainContent>
            {application && 
-            <ApplicantForm/>
+           <React.Fragment>
+              <ApplicantForm/>
+              <button className="submit" onClick={()=> changeProduct()}>Next</button>
+            </React.Fragment>
           }
           {product &&
-            <ProductForm/>
+            <React.Fragment>
+              <ProductForm/>
+              <button className="submit" onClick={()=> changeEmployment()}>Next</button>
+          </React.Fragment>
           }
           {employment &&
-            <EmploymentForm/>
+            <React.Fragment>
+              <EmploymentForm/>
+              <button className="submit" onClick={()=> changeGross()}>Next</button>
+          </React.Fragment>
           }
           {gross &&
+            <React.Fragment>
             <GrossForm/>
+            <button className="submit" onClick={()=> changeExpense()}>Next</button>
+          </React.Fragment>
+          }
+          {expense &&
+            <React.Fragment>
+            <ExpenseForm/>
+            <button className="submit" onClick={()=> changeReferences()}>Next</button>
+          </React.Fragment>
+          }
+          {reference &&
+            <React.Fragment>
+            <ReferenceForm/>
+            <button className="submit" onClick={()=> changeAgreement()}>Next</button>
+          </React.Fragment>
+          }
+          {agreement &&
+            <React.Fragment>
+            <AgreementForm/>
+            <button className="submit">Submit</button>
+          </React.Fragment>
           }
          </MainContent>
          <Footer>
@@ -478,16 +630,262 @@ function GrossForm() {
               <p className="label">Stipends/Allowances (Dollars) </p>
               <input className="text-input"/>
             </InputContainer>
-{/* 
-            <InputContainer>
-              <p className="label">Other (Dollars) </p>
-              <input className="text-input"/>
-            </InputContainer> */}
 
             <InputContainer>
                   <p className="label">Upload proof of income </p>
                   <input className="upload" type="file" multiple/>
                 </InputContainer>
+        </div>
+      </FormContainer>
+  </React.Fragment>
+  )
+}
+
+function ExpenseForm() {
+  return (
+    <React.Fragment>
+      <FormContainer>
+        <h1 className="header">Rent or Mortgage (Dollars)</h1>
+      <div className="row" style={{width:"40rem"}}>
+            <InputContainer>
+              <p className="label">Present</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Previous</p>
+              <input className="text-input"/>
+            </InputContainer>
+        </div>
+        <h1 className="header">Utilities (Dollars)</h1>
+        <div className="row">
+          
+            <InputContainer>
+              <p className="label">Electricity (Dollars) </p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Internet Service Providers (Dollars)</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Water (Dollars)</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+                  <p className="label">Other (Dollars)</p>
+                  <input className="text-input"/>
+                </InputContainer>
+          </div>
+          <h1 className="header">Other Financing (Dollars)</h1>
+          <div className="row">
+            
+            <InputContainer>
+              <p className="label">Bank Loans</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Other Hire Purchase</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Credit Cards</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+                  <p className="label">Other</p>
+                  <input className="text-input"/>
+                </InputContainer>
+          </div>
+          <h1 className="header">Other Expenses (Dollars)</h1>
+          <div className="row">
+            
+            <InputContainer>
+              <p className="label">Food and Groceries </p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Transportation and Travel</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Number of Dependents</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+                  <p className="label">Other</p>
+                  <input className="text-input"/>
+                </InputContainer>
+          </div>
+      </FormContainer>
+  </React.Fragment>
+  )
+}
+
+function ReferenceForm() {
+  return (
+    <React.Fragment>
+      <FormContainer>
+        <h1 className="header">Reference 1</h1>
+      <div className="row">
+            <InputContainer>
+              <p className="label">First Name </p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Last Name </p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Street Address</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Address Cont..</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">City</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Parish</p>
+              <DropdownContainer>
+                <option></option>
+                <option>{"Kingston & St Andrew"}</option>
+                <option>{"St Catherine"}</option>
+                <option>{"Clarendon"}</option>
+                <option>{"Manchester"}</option>
+                <option>{"St Elizabeth"}</option>
+                <option>{"Westmoreland"}</option>
+                <option>{"Hanover"}</option>
+                <option>{"St James"}</option>
+                <option>{"Trelawny"}</option>
+                <option>{"St Mary"}</option>
+                <option>{"St Ann"}</option>
+                <option>{"Portland"}</option>
+                <option>{"St Thomas"}</option>
+              </DropdownContainer>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Home Phone Number</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Mobile Phone Number</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Relationship to Applicant</p>
+              <input className="text-input"/>
+            </InputContainer>
+        </div>
+        <h1 className="header">Reference 2</h1>
+        <div className="row">
+            <InputContainer>
+              <p className="label">First Name </p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Last Name </p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Street Address</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Address Cont..</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">City</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Parish</p>
+              <DropdownContainer>
+                <option></option>
+                <option>{"Kingston & St Andrew"}</option>
+                <option>{"St Catherine"}</option>
+                <option>{"Clarendon"}</option>
+                <option>{"Manchester"}</option>
+                <option>{"St Elizabeth"}</option>
+                <option>{"Westmoreland"}</option>
+                <option>{"Hanover"}</option>
+                <option>{"St James"}</option>
+                <option>{"Trelawny"}</option>
+                <option>{"St Mary"}</option>
+                <option>{"St Ann"}</option>
+                <option>{"Portland"}</option>
+                <option>{"St Thomas"}</option>
+              </DropdownContainer>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Home Phone Number</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Mobile Phone Number</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Relationship to Applicant</p>
+              <input className="text-input"/>
+            </InputContainer>
+        </div>
+      </FormContainer>
+  </React.Fragment>
+  )
+}
+
+function AgreementForm() {
+  return(
+    <React.Fragment>
+      <FormContainer>
+      <h1 className="header">By signing below, you affirm that the information you have given on this Application form, where applicable,
+       is true and complete and forms a part of this Application and that you have not withheld any information. 
+       We will rely on the information you have given us to decide on your Application. 
+       You authorise us to obtain further information about you and to check and verify the information you have given us. 
+       You also agree to pay all fees and costs associated with the processing of this loan. 
+       We can also obtain and/or give information about you to credit bureaus and other credit grantors as permitted by law.
+        You also request and authorise us to send you information about other products and services of the Kaizen Group of Companies. </h1>
+      <div className="row" style={{width:"40rem"}}>
+            <InputContainer>
+              <p className="label">Borrower's Name</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Date (MM/DD/YYYY) </p>
+              <input className="text-input"/>
+            </InputContainer>
+
         </div>
       </FormContainer>
   </React.Fragment>

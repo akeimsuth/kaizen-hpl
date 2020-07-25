@@ -31,79 +31,17 @@ const MenuButton = styled.button`
 
 const Menu = (props) => {
 
-    const changeApplication = () => {
-        props.setApplication(true);
-        props.setProduct(false);
-        props.setEmployment(false);
-        props.setGross(false);
-        props.setExpense(false);
-        props.setReference(false);
-        props.setAgreement(false);
-    }
-    const changeProduct = () => {
-        props.setApplication(false);
-        props.setProduct(true);
-        props.setEmployment(false);
-        props.setGross(false);
-        props.setExpense(false);
-        props.setReference(false);
-        props.setAgreement(false);
-    }
-    const changeEmployment = () => {
-        props.setApplication(false);
-        props.setProduct(false);
-        props.setEmployment(true);
-        props.setGross(false);
-        props.setExpense(false);
-        props.setReference(false);
-        props.setAgreement(false);
-    }
-    const changeGross = () => {
-        props.setApplication(false);
-        props.setProduct(false);
-        props.setEmployment(false);
-        props.setGross(true);
-        props.setExpense(false);
-        props.setReference(false);
-        props.setAgreement(false);
-    }
-    const changeExpense = () => {
-        props.setApplication(false);
-        props.setProduct(false);
-        props.setEmployment(false);
-        props.setGross(false);
-        props.setExpense(true);
-        props.setReference(false);
-        props.setAgreement(false);
-    }
-    const changeReferences = () => {
-        props.setApplication(false);
-        props.setProduct(false);
-        props.setEmployment(false);
-        props.setGross(false);
-        props.setExpense(false);
-        props.setReference(true);
-        props.setAgreement(false);
-    }
-    const changeAgreement = () => {
-        props.setApplication(false);
-        props.setProduct(false);
-        props.setEmployment(false);
-        props.setGross(false);
-        props.setExpense(false);
-        props.setReference(false);
-        props.setAgreement(true);
-    }
+
 
     return (
         <MenuContainer>
-            <MenuButton selected={props.application} onClick={()=> changeApplication()}>Applicant Information</MenuButton>
-            <MenuButton selected={props.product} onClick={()=> changeProduct()}>Product Information</MenuButton>
-            <MenuButton selected={props.employment} onClick={()=> changeEmployment()}>Employment Information</MenuButton>
-            <MenuButton selected={props.gross} onClick={()=> changeGross()}>Gross Monthly Income</MenuButton>
-            <MenuButton selected={props.expense} onClick={()=> changeExpense()}>Monthly Expense</MenuButton>
-            <MenuButton selected={props.reference} onClick={()=> changeReferences()}>References</MenuButton>
-            <MenuButton selected={props.agreement} onClick={()=> changeAgreement()}>Acknowledgement and Agreement</MenuButton>
+            <MenuButton selected={props.application}>Applicant Information</MenuButton>
+            <MenuButton selected={props.product}>Product Information</MenuButton>
+            <MenuButton selected={props.employment}>Employment Information</MenuButton>
+            <MenuButton selected={props.gross}>Gross Monthly Income</MenuButton>
+            <MenuButton selected={props.expense}>Monthly Expense</MenuButton>
+            <MenuButton selected={props.reference}>References</MenuButton>
+            <MenuButton selected={props.agreement}>Acknowledgement and Agreement</MenuButton>
         </MenuContainer>
     )
 }
