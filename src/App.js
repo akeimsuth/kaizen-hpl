@@ -107,6 +107,22 @@ const InputContainer = styled.div`
       border: 2px solid var(--color-blue-200);
     }
   }
+  .upload{
+    padding-top: 0.5rem;
+    padding-left: 1rem;
+    height: 2rem;
+    width: 15rem;
+    outline: 0;
+    border: 0;
+    border-radius: var(--space-6);
+    border: 2px solid var(--color-gray-200);
+    color: var(--color-gray-700);
+    background-color: var(--color-white);
+
+    :focus{
+      border: 2px solid var(--color-blue-200);
+    }
+  }
 `;
 
 const FileContainer = styled.div`
@@ -171,6 +187,9 @@ function App() {
           }
           {employment &&
             <EmploymentForm/>
+          }
+          {gross &&
+            <GrossForm/>
           }
          </MainContent>
          <Footer>
@@ -290,7 +309,7 @@ function ApplicantForm() {
 
             <InputContainer>
               <p className="label">Upload copies of National ID, Proof of Address, and TRN</p>
-              <input className="text-input" type="file" multiple/>
+              <input className="upload" type="file" multiple/>
             </InputContainer>
           </div>
         </FormContainer>
@@ -422,10 +441,55 @@ function EmploymentForm() {
 
             <InputContainer>
               <p className="label">Upload copies of Job Letter, Pay Slips, Other Employment Verification</p>
-              <input className="text-input" type="file" multiple/>
+              <input className="upload" type="file" multiple/>
             </InputContainer>
       </div>
       </FormContainer>
     </React.Fragment>
+  )
+}
+
+function GrossForm() {
+  return(
+    <React.Fragment>
+      <FormContainer>
+      <div className="row">
+            <InputContainer>
+              <p className="label">Net Monthly Income (Dollars) </p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Overtime (Dollars)</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Bonuses (Dollars) </p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Commissions (Dollars) </p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Stipends/Allowances (Dollars) </p>
+              <input className="text-input"/>
+            </InputContainer>
+{/* 
+            <InputContainer>
+              <p className="label">Other (Dollars) </p>
+              <input className="text-input"/>
+            </InputContainer> */}
+
+            <InputContainer>
+                  <p className="label">Upload proof of income </p>
+                  <input className="upload" type="file" multiple/>
+                </InputContainer>
+        </div>
+      </FormContainer>
+  </React.Fragment>
   )
 }
