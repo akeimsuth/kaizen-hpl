@@ -169,6 +169,9 @@ function App() {
           {product &&
             <ProductForm/>
           }
+          {employment &&
+            <EmploymentForm/>
+          }
          </MainContent>
          <Footer>
         <p className="text">{"Webdealsja Higher Purchase Form "+new Date().getFullYear()}</p>
@@ -323,6 +326,103 @@ function ProductForm() {
             <InputContainer>
               <p className="label">Number of Months </p>
               <input className="text-input"/>
+            </InputContainer>
+      </div>
+      </FormContainer>
+    </React.Fragment>
+  )
+}
+
+function EmploymentForm() {
+  return (
+    <React.Fragment>
+      <FormContainer>
+      <div className="row">
+          <InputContainer>
+              <p className="label">Self Employed?</p>
+              <DropdownContainer>
+                <option></option>
+                <option>{"Yes"}</option>
+                <option>{"No"}</option>
+              </DropdownContainer>
+            </InputContainer>
+            <InputContainer>
+              <p className="label">Name of Employer</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Phone</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Address</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Address 2 </p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">City</p>
+              <input className="text-input"/>
+            </InputContainer>
+            <InputContainer>
+              <p className="label">Parish</p>
+              <DropdownContainer>
+                <option></option>
+                <option>{"Kingston & St Andrew"}</option>
+                <option>{"St Catherine"}</option>
+                <option>{"Clarendon"}</option>
+                <option>{"Manchester"}</option>
+                <option>{"St Elizabeth"}</option>
+                <option>{"Westmoreland"}</option>
+                <option>{"Hanover"}</option>
+                <option>{"St James"}</option>
+                <option>{"Trelawny"}</option>
+                <option>{"St Mary"}</option>
+                <option>{"St Ann"}</option>
+                <option>{"Portland"}</option>
+                <option>{"St Thomas"}</option>
+              </DropdownContainer>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Position/Title</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Years at Job</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Employment Status</p>
+              <DropdownContainer>
+                <option></option>
+                <option>{"Permanent"}</option>
+                <option>{"Part-time"}</option>
+                <option>{"Contractual"}</option>
+              </DropdownContainer>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Name of Manager or Supervisor</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Contact Position/Title</p>
+              <input className="text-input"/>
+            </InputContainer>
+
+            <InputContainer>
+              <p className="label">Upload copies of Job Letter, Pay Slips, Other Employment Verification</p>
+              <input className="text-input" type="file" multiple/>
             </InputContainer>
       </div>
       </FormContainer>
