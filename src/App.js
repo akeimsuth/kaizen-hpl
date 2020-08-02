@@ -6,9 +6,17 @@ import styled from '@emotion/styled'
 import Requirements from './components/Requirements';
 import Menu from './components/Menu';
 import Upload from './components/Upload';
+import axios from 'axios';
+import emailjs from 'emailjs-com';
+import DayPickerInput from 'react-day-picker/DayPickerInput';
+import 'react-day-picker/lib/style.css';
+import {formatCurrency} from './helper';
+
+import DatePicker from '@bit/nexxtway.react-rainbow.date-picker';
 
 const Wrapper = styled.div`
   padding: 24px;
+
 
 `;
 
@@ -16,29 +24,84 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: 25rem 1fr 1fr;
   grid-template-rows: 35rem 35rem 5rem;
+
+  @media (max-width: 500px){
+    grid-template-columns: 1fr;
+    grid-template-rows: 30rem 50rem 5rem;
+  }
+`;
+
+const BackgroundImage = styled.img`
+  grid-column: 1 / span 2;
+  border-radius: var(--space-16);
+  width: 100%;
+  height: 100%;
+  @media (max-width: 1200px){
+    grid-column: 1;
+    
+  }
+  @media (max-width: 800px){
+    display: none;
+  }
 `;
 
 const Header = styled.div`
   /* background-color: var(--color-blue-300); */
-  grid-column: 1 / span 3;
+  grid-column: 3;
+
+  overflow-y: scroll;
+
+&::-webkit-scrollbar {
+      width: var(--space-6); 
+      height:var(--space-6);
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+      box-shadow: none;
+      border-radius: var(--space-6);
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+      background: var(--color-transparent);
+      border-radius: var(--space-6);
+  }
+  
+  .col{
+      display: flex;
+      flex-direction: column;
+  }
 
   .title{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: var(--space-40);
+    font-size: var(--font-40);
     font-weight: 500;
     line-height: var(--space-52);
-    color: var(--color-gray-700);
+    color: var(--color-yellow-500);
+  }
+  @media (max-width: 1200px){
+    grid-column: 2 / span 3;
   }
 
-  .row{
-    display: flex;
-    flex-direction: row;
+  @media (max-width: 800px){
+    grid-column: 1 / span 2;
+    .title{
+      font-size: var(--font-28);
+      font-weight: 500;
+      color: var(--color-gray-700);
+    }
+   
   }
 `;
 
 const Sidebar = styled.aside`
   /* background-color: var(--color-green-300); */
   grid-column: 1;
+
+  @media (max-width: 500px){
+    display: none;
+  }
 `;
 
 const MainContent = styled.div`
@@ -46,6 +109,13 @@ const MainContent = styled.div`
   grid-column: 2 / span 3;
   overflow-y: scroll;
 
+  .heading{
+    font-size: var(--font-20);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--color-gray-900);
+    background-color: var(--color-yellow-400);
+    text-align: center;
+  }
   &::-webkit-scrollbar {
         width: var(--space-6); 
         height:var(--space-6);
@@ -88,6 +158,9 @@ const MainContent = styled.div`
       opacity: 1;
     }
   }
+  @media (max-width: 500px){
+    grid-column: 1;
+  }
 `;
 
 const Footer = styled.div`
@@ -104,6 +177,12 @@ const Footer = styled.div`
     display: flex;
     justify-content: center;
   }
+  @media (max-width: 500px){
+    .text{
+      font-size: var(--font-16);
+    }
+  }
+
 `;
 
 const FormContainer = styled.div`
@@ -218,6 +297,7 @@ function App() {
   const [expense, setExpense] = useState(false);
   const [reference, setReference] = useState(false);
   const [agreement, setAgreement] = useState(false);
+  const [file, setFile] = useState(null);
 
   const changeApplication = () => {
     setApplication(true);
@@ -282,13 +362,226 @@ const changeAgreement = () => {
     setReference(false);
     setAgreement(true);
 }
+const [firstName,setFirstName] = useState('Jason');
+const [initial,setInitial] = useState('J');
+const [lastName,setLastName] = useState('Statham');
+const [trn,setTrn] = useState('383829292002');
+const [date,setDate] = useState(new Date());
+const [address,setAddress] = useState('Statham');
+const [addressCont,setAddressCont] = useState('Statham');
+const [city,setCity] = useState('Statham');
+const [parish,setParish] = useState('Statham');
+const [homeNumber,setHomeNumber] = useState('Statham');
+const [mobileNumber,setMobileNumber] = useState('Statham');
+const [email,setEmail] = useState('Statham');
+const [id,setId] = useState('Statham');
+const [idNumber,setIdNumber] = useState('Statham');
+const [marital,setMarital] = useState('Statham');
+const [productName,setProductName] = useState('Statham');
+const [sku,setSKU] = useState('Statham');
+const [value,setValue] = useState(0);
+const [deposit,setDeposit] = useState(0);
+const [months,setMonths] = useState(0);
+
+//Employment
+const [employed,setEmployed] = useState();
+const [employedEmployer,setEmployedEmployer] = useState();
+const [employedPhone,setEmployedPhone] = useState();
+const [employedAddress,setEmployedAddress] = useState();
+const [employedAddressCont,setEmployedAddressCont] = useState();
+const [employedCity,setEmployedCity] = useState();
+const [employedParish,setEmployedParish] = useState();
+const [employedPosition,setEmployedPosition] = useState();
+const [employedYears,setEmployedYears] = useState();
+const [employedStatus,setEmployedStatus] = useState();
+const [employedManager,setEmployedManager] = useState();
+
+//Gross
+const [grossIncome,setGrossIncome] = useState();
+const [grossOvertime,setGrossOvertime] = useState();
+const [grossBonus,setGrossBonus] = useState();
+const [grossCommission,setGrossCommission] = useState();
+const [grossStipend,setGrossStipend] = useState();
+
+//Expense
+const [presentRent, setPresentRent] = useState();
+const [previousRent, setPreviousRent] = useState();
+const [electricity, setElectricity] = useState();
+const [internet, setInternet] = useState();
+const [water, setWater] = useState();
+const [other1, setOther1] = useState();
+const [bankLoan, setBankLoan] = useState();
+const [hirePurchase, setHirePurchase] = useState();
+const [creditCard, setCreditCard] = useState();
+const [other2, setOther2] = useState();
+const [food, setFood] = useState();
+const [travel, setTravel] = useState();
+const [dependents, setDependents] = useState();
+const [other3, setOther3] = useState();
+
+//Reference
+const [firstName1,setFirstName1] = useState();
+const [lastName1,setLastName1] = useState();
+const [address1,setAddress1] = useState();
+const [addressCont1,setAddressCont1] = useState();
+const [city1,setCity1] = useState();
+const [parish1,setParish1] = useState();
+const [home1,setHome1] = useState();
+const [mobile1,setMobile1] = useState();
+const [relationship1,setRelationship1] = useState();
+
+const [firstName2,setFirstName2] = useState();
+const [lastName2,setLastName2] = useState();
+const [address2,setAddress2] = useState();
+const [addressCont2,setAddressCont2] = useState();
+const [city2,setCity2] = useState();
+const [parish2,setParish2] = useState();
+const [home2,setHome2] = useState();
+const [mobile2,setMobile2] = useState();
+const [relationship2,setRelationship2] = useState();
+
+//Agreement
+const [borrower,setBorrower] = useState();
+const [agreementDate, setAgreementDate] = useState(new Date());
+
+
+const template_params = {
+  "reply_to": "akeimsuth@gmail.com",
+  "from_name": firstName+" "+lastName,
+  "to_name": "Akeim Sutherland",
+  "message_html": `
+  
+  <h1 style="color:var(--color-gray-500); font-size:2rem;">Application Information</h1>
+  <br/>
+  <p><strong>First Name:</strong> ${firstName}</p><p><strong>Middle Initial:</strong> ${initial}</p><p><strong>Last Name:</strong> ${lastName}</p>
+  <p><strong>TRN:</strong> ${trn}</p>
+  <p><strong>Date of Birth:</strong> ${date.toDateString()}</p>
+  <p><strong>Address:</strong> ${address+" "+addressCont}</p>
+  <p><strong>City:</strong> ${city}</p>
+  <p><strong>Parish:</strong> ${parish}</p>
+  <p><strong>Home Number:</strong> ${homeNumber}</p>
+  <p><strong>Mobile Number:</strong> ${mobileNumber}</p>
+  <p><strong>Email:</strong> ${email}</p>
+  <p><strong>ID:</strong> ${id}</p>
+  <p><strong>ID Number:</strong> ${idNumber}</p>
+  <p><strong>Marital Status:</strong> ${marital}</p>
+  <br/>
+  <h1 style="color:var(--color-gray-500); font-size:2rem;">Product Information</h1>
+  <br/>
+  <p><strong>Product Name:</strong> ${productName}</p>
+  <p><strong>SKU#:</strong> ${sku}</p>
+  <p><strong>Value in Dollars:</strong> ${formatCurrency(value)}</p>
+  <p><strong>Deposit in Dollars:</strong> ${formatCurrency(deposit)}</p>
+  <p><strong>Number of Months:</strong> ${months}</p>
+  <br/>
+  <h1 style="color:var(--color-gray-500); font-size:2rem;">Employment Information</h1>
+  <br/>
+  <p><strong>Employed:</strong> ${employed}</p>
+  <p><strong>Name of Employer:</strong> ${employedEmployer}</p>
+  <p><strong>Address:</strong> ${employedAddress+" "+employedAddressCont}</p>
+  <p><strong>City:</strong> ${employedCity}</p>
+  <p><strong>Parish:</strong> ${employedParish}</p>
+  <p><strong>Employer Number:</strong> ${employedPhone}</p>
+  <p><strong>Position/Title:</strong> ${employedPosition}</p>
+  <p><strong>Employed Years:</strong> ${employedYears}</p>
+  <p><strong>Employment Status:</strong> ${employedStatus}</p>
+  <p><strong>Manager:</strong> ${employedManager}</p>
+  <br/>
+
+  <h1 style="color:var(--color-gray-500); font-size:2rem;">Gross Monthly Income</h1>
+  <br/>
+  <p><strong>Net Monthly Income (Dollars):</strong> ${grossIncome}</p>
+  <p><strong>Overtime (Dollars):</strong> ${grossOvertime}</p>
+  <p><strong>Bonuses (Dollars):</strong> ${grossBonus}</p>
+  <p><strong>Commissions (Dollars):</strong> ${grossCommission}</p>
+  <p><strong>Stipends/Allowances (Dollars):</strong> ${grossStipend}</p>
+  <br/>
+  <h1 style="color:var(--color-gray-500); font-size:2rem;">Monthly Expense</h1>
+  <br/>
+
+  <h1 style="color:var(--color-gray-500); font-size:1rem;">Rent or Mortgage (Dollars)</h1>
+  <br/>
+  <p><strong>Present:</strong> ${presentRent}</p>
+  <p><strong>Previous:</strong> ${previousRent}</p>
+  <h1 style="color:var(--color-gray-500); font-size:1rem;">Utilities (Dollars)</h1>
+  <br/>
+  <p><strong>Electricity (Dollars):</strong> ${electricity}</p>
+  <p><strong>Internet Service Providers (Dollars):</strong> ${internet}</p>
+  <p><strong>Water (Dollars):</strong> ${water}</p>
+  <p><strong>Other (Dollars):</strong> ${other1}</p>
+  <br/>
+
+  <h1 style="color:var(--color-gray-500); font-size:1rem;">Other Financing (Dollars)</h1>
+  <br/>
+  <p><strong>Bank Loans:</strong> ${bankLoan}</p>
+  <p><strong>Other Hire Purchase:</strong> ${hirePurchase}</p>
+  <p><strong>Credit Cards:</strong> ${creditCard}</p>
+  <p><strong>Other:</strong> ${other2}</p>
+
+  <h1 style="color:var(--color-gray-500); font-size:1rem;">Other Expenses (Dollars)</h1>
+  <br/>
+  <p><strong>Food and Groceries:</strong> ${food}</p>
+  <p><strong>Transportation and Travel:</strong> ${travel}</p>
+  <p><strong>Number of Dependents:</strong> ${dependents}</p>
+  <p><strong>Other:</strong> ${other3}</p>
+  <br/>
+  <h1 style="color:var(--color-gray-500); font-size:2rem;">Reference Information</h1>
+  <br/>
+  <h1 style="color:var(--color-gray-500); font-size:1rem;">Reference 1</h1>
+  <br/>
+  <p><strong>First Name:</strong> ${firstName1}</p>
+  <p><strong>Last Name:</strong> ${lastName1}</p>
+  <p><strong>Street Address:</strong> ${address1}</p>
+  <p><strong>Address Cont.:</strong> ${addressCont1}</p>
+  <p><strong>City:</strong> ${city1}</p>
+  <p><strong>Parish:</strong> ${parish1}</p>
+  <p><strong>Home Phone Number:</strong> ${home1}</p>
+  <p><strong>Mobile Phone Number:</strong> ${mobile1}</p>
+  <p><strong>Relationship to Applicant:</strong> ${relationship1}</p>
+  <br/>
+  <h1 style="color:var(--color-gray-500); font-size:1rem;">Reference 2</h1>
+  <br/>
+  <p><strong>First Name:</strong> ${firstName2}</p>
+  <p><strong>Last Name:</strong> ${lastName2}</p>
+  <p><strong>Street Address:</strong> ${address2}</p>
+  <p><strong>Address Cont.:</strong> ${addressCont2}</p>
+  <p><strong>City:</strong> ${city2}</p>
+  <p><strong>Parish:</strong> ${parish2}</p>
+  <p><strong>Home Phone Number:</strong> ${home2}</p>
+  <p><strong>Mobile Phone Number:</strong> ${mobile2}</p>
+  <p><strong>Relationship to Applicant:</strong> ${relationship2}</p>
+
+  <br/>
+  <h1 style="color:var(--color-gray-500); font-size:2rem;">Agreement Information</h1>
+  <br/>
+  <p><strong>Borrower's Name:</strong> ${borrower}</p>
+  <p><strong>Agreement Date:</strong> ${agreementDate.toDateString}</p>
+  `
+}
+
+const service_id = "default_service";
+const template_id = "template_UqjlfSWm";
+
+const handleSubmit = () => {
+
+
+emailjs.send(service_id, template_id, template_params,"user_2WLtdj8YcLEeotGGpmp4R");
+ }
+
+
+
+
 
   return (
       <Wrapper>
         <Container>
+        <BackgroundImage src="banner.jpg"/>
          <Header>
-              <h1>Webdealsja Hire Purchase Loan Application</h1>
+           
+           <div className="col">
+              <h1 className="title">Webdealsja Hire Purchase Loan Application</h1>
               <Requirements/>
+            </div>
          </Header>
          <Sidebar>
            <Menu application={application} setApplication={setApplication} 
@@ -303,44 +596,70 @@ const changeAgreement = () => {
          <MainContent>
            {application && 
            <React.Fragment>
-              <ApplicantForm/>
+             <h1 class="heading">Application Information</h1>
+              <ApplicantForm setFile={setFile} setFirstName={setFirstName} setLastName={setLastName} setInitial={setInitial} date={date} setDate={setDate} setTrn={setTrn}
+              setAddress={setAddress} setAddressCont={setAddressCont} setCity={setCity} setParish={setParish}
+              setHomeNumber={setHomeNumber} setMobileNumber={setMobileNumber} setEmail={setEmail} setId={setId}
+              setIdNumber={setIdNumber} setMarital={setMarital}/>
+
               <button className="submit" onClick={()=> changeProduct()}>Next</button>
             </React.Fragment>
           }
           {product &&
             <React.Fragment>
-              <ProductForm/>
+              <h1 class="heading">Product Information</h1>
+              <ProductForm setProductName={setProductName} setSKU={setSKU} setValue={setValue} setDeposit={setDeposit} setMonths={setMonths}/>
               <button className="submit" onClick={()=> changeEmployment()}>Next</button>
           </React.Fragment>
           }
           {employment &&
             <React.Fragment>
-              <EmploymentForm/>
+              <h1 class="heading">Employment Information</h1>
+              <EmploymentForm setEmployed={setEmployed} setEmployedPosition={setEmployedPosition} 
+              setEmployedAddress={setEmployedAddress} setEmployedAddressCont={setEmployedAddressCont}
+              setEmployedCity={setEmployedCity} setEmployedEmployer={setEmployedEmployer} setEmployedManager={setEmployedManager}
+              setEmployedParish={setEmployedParish} setEmployedPhone={setEmployedPhone} setEmployedStatus={setEmployedStatus}
+              setEmployedYears={setEmployedYears}/>
               <button className="submit" onClick={()=> changeGross()}>Next</button>
           </React.Fragment>
           }
           {gross &&
             <React.Fragment>
-            <GrossForm/>
+              <h1 class="heading">Gross Income</h1>
+            <GrossForm setGross={setGross} setGrossBonus={setGrossBonus} setGrossCommission={setGrossCommission}
+            setGrossIncome={setGrossIncome} setGrossOvertime={setGrossOvertime} setGrossStipend={setGrossStipend}/>
             <button className="submit" onClick={()=> changeExpense()}>Next</button>
           </React.Fragment>
           }
           {expense &&
             <React.Fragment>
-            <ExpenseForm/>
+              <h1 class="heading">Expense Information</h1>
+            <ExpenseForm setPresentRent={setPresentRent} setPreviousRent={setPreviousRent} setElectricity={setElectricity} 
+            setWater={setWater} setInternet={setInternet} setOther1={setOther1} setOther2={setOther2} setOther3={setOther3}
+            setBankLoan={setBankLoan} setHirePurchase={setHirePurchase} setCreditCard={setCreditCard} setDependents={setDependents}
+            setFood={setFood} setTravel={setTravel}/>
             <button className="submit" onClick={()=> changeReferences()}>Next</button>
           </React.Fragment>
           }
           {reference &&
             <React.Fragment>
-            <ReferenceForm/>
+              <h1 class="heading">Reference Information</h1>
+            <ReferenceForm setFirstName1={setFirstName1} setLastName1={setLastName1} setAddress1={setAddress1} setAddressCont1={setAddressCont1}
+            setCity1={setCity1} setParish1={setParish1} setHome1={setHome1} setMobile1={setMobile1} setRelationship1={setRelationship1}
+            
+            setFirstName2={setFirstName2} setLastName2={setLastName2} setAddress2={setAddress2} setAddressCont2={setAddressCont2}
+            setCity2={setCity2} setParish2={setParish2} setHome2={setHome2} setMobile2={setMobile2} setRelationship2={setRelationship2}
+            
+            
+            />
             <button className="submit" onClick={()=> changeAgreement()}>Next</button>
           </React.Fragment>
           }
           {agreement &&
             <React.Fragment>
-            <AgreementForm/>
-            <button className="submit">Submit</button>
+              <h1 class="heading">Agreement Information</h1>
+            <AgreementForm setBorrower={setBorrower} agreementDate={agreementDate} setAgreementDate={setAgreementDate}/>
+            <button className="submit" onClick={()=> handleSubmit()}>Submit</button>
           </React.Fragment>
           }
          </MainContent>
@@ -354,54 +673,59 @@ const changeAgreement = () => {
 
 export default App;
 
-function ApplicantForm() {
+function ApplicantForm(props) {
+
   return (
       <React.Fragment>
         <FormContainer>
           <div className="row">
             <InputContainer>
               <p className="label">First Name</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setFirstName(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Middle Initial</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setInitial(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Last Name</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setLastName(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Tax Registration Number(TRN)</p>
-              <input className="text-input" required type="number"/>
+              <input className="text-input" required type="number" onChange={(e)=>props.setTrn(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Date of Birth</p>
-              <input className="text-input"/>
+              <div className="day-input">
+              <DatePicker
+					      value={props.date}
+					      onChange={value => props.setDate(value)} />
+             </div>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Street Address</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setAddress(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Address Cont..</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setAddressCont(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">City</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setCity(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Parish</p>
-              <DropdownContainer>
+              <DropdownContainer onChange={(e)=>props.setParish(e.target.value)}>
                 <option></option>
                 <option>{"Kingston & St Andrew"}</option>
                 <option>{"St Catherine"}</option>
@@ -421,22 +745,22 @@ function ApplicantForm() {
 
             <InputContainer>
               <p className="label">Home Number</p>
-              <input className="text-input" type="number"/>
+              <input className="text-input" type="number" onChange={(e)=>props.setHomeNumber(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Mobile Number</p>
-              <input className="text-input" type="number"/>
+              <input className="text-input" type="number" onChange={(e)=>props.setMobileNumber(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Email Address</p>
-              <input className="text-input" type="email"/>
+              <input className="text-input" type="email" onChange={(e)=>props.setEmail(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">National ID Type</p>
-              <DropdownContainer>
+              <DropdownContainer onChange={(e)=>props.setId(e.target.value)}>
                 <option></option>
                 <option>{"Driver's License"}</option>
                 <option>{"Passport"}</option>
@@ -446,12 +770,12 @@ function ApplicantForm() {
 
             <InputContainer>
               <p className="label">ID Number</p>
-              <input className="text-input" type="number"/>
+              <input className="text-input" type="number" onChange={(e)=>props.setIdNumber(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Marital Status</p>
-              <DropdownContainer>
+              <DropdownContainer onChange={(e)=>props.setMarital(e.target.value)}>
                 <option></option>
                 <option>{"Married"}</option>
                 <option>{"Separated"}</option>
@@ -461,7 +785,7 @@ function ApplicantForm() {
 
             <InputContainer>
               <p className="label">Upload copies of National ID, Proof of Address, and TRN</p>
-              <input className="upload" type="file" multiple/>
+              <input className="upload" type="file" multiple onChange={(e)=>props.setFile(e.target.value)}/>
             </InputContainer>
           </div>
         </FormContainer>
@@ -469,34 +793,34 @@ function ApplicantForm() {
   )
 }
 
-function ProductForm() {
+function ProductForm(props) {
   return (
     <React.Fragment>
       <FormContainer>
       <div className="row">
             <InputContainer>
               <p className="label">Product Name</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setProductName(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">SKU # (Where applicable)</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setSKU(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Value (Dollars) </p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setValue(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Deposit (Dollars) </p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setDeposit(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Number of Months </p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setMonths(e.target.value)}/>
             </InputContainer>
       </div>
       </FormContainer>
@@ -504,14 +828,16 @@ function ProductForm() {
   )
 }
 
-function EmploymentForm() {
+function EmploymentForm(props) {
+
+
   return (
     <React.Fragment>
       <FormContainer>
       <div className="row">
           <InputContainer>
               <p className="label">Self Employed?</p>
-              <DropdownContainer>
+              <DropdownContainer onChange={(e)=>props.setEmployed(e.target.value)}>
                 <option></option>
                 <option>{"Yes"}</option>
                 <option>{"No"}</option>
@@ -519,31 +845,31 @@ function EmploymentForm() {
             </InputContainer>
             <InputContainer>
               <p className="label">Name of Employer</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setEmployedEmployer(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Phone</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setEmployedPhone(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Address</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setEmployedAddress(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Address 2 </p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setEmployedAddressCont(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">City</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setEmployedCity(e.target.value)}/>
             </InputContainer>
             <InputContainer>
               <p className="label">Parish</p>
-              <DropdownContainer>
+              <DropdownContainer onChange={(e)=>props.setEmployedParish(e.target.value)}>
                 <option></option>
                 <option>{"Kingston & St Andrew"}</option>
                 <option>{"St Catherine"}</option>
@@ -563,17 +889,17 @@ function EmploymentForm() {
 
             <InputContainer>
               <p className="label">Position/Title</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setEmployedPosition(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Years at Job</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setEmployedYears(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Employment Status</p>
-              <DropdownContainer>
+              <DropdownContainer onChange={(e)=>props.setEmployedStatus(e.target.value)}>
                 <option></option>
                 <option>{"Permanent"}</option>
                 <option>{"Part-time"}</option>
@@ -583,12 +909,12 @@ function EmploymentForm() {
 
             <InputContainer>
               <p className="label">Name of Manager or Supervisor</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setEmployedManager(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Contact Position/Title</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setEmployedPosition(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
@@ -601,34 +927,36 @@ function EmploymentForm() {
   )
 }
 
-function GrossForm() {
+function GrossForm(props) {
+
+
   return(
     <React.Fragment>
       <FormContainer>
       <div className="row">
             <InputContainer>
               <p className="label">Net Monthly Income (Dollars) </p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setGrossIncome(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Overtime (Dollars)</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setGrossOvertime(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Bonuses (Dollars) </p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setGrossBonus(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Commissions (Dollars) </p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setGrossCommission(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Stipends/Allowances (Dollars) </p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setGrossStipend(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
@@ -641,7 +969,10 @@ function GrossForm() {
   )
 }
 
-function ExpenseForm() {
+function ExpenseForm(props) {
+
+
+
   return (
     <React.Fragment>
       <FormContainer>
@@ -649,12 +980,12 @@ function ExpenseForm() {
       <div className="row" style={{width:"40rem"}}>
             <InputContainer>
               <p className="label">Present</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setPresentRent(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Previous</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setPreviousRent(e.target.value)}/>
             </InputContainer>
         </div>
         <h1 className="header">Utilities (Dollars)</h1>
@@ -662,22 +993,22 @@ function ExpenseForm() {
           
             <InputContainer>
               <p className="label">Electricity (Dollars) </p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setElectricity(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Internet Service Providers (Dollars)</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setInternet(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Water (Dollars)</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setWater(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
                   <p className="label">Other (Dollars)</p>
-                  <input className="text-input"/>
+                  <input className="text-input" onChange={(e)=>props.setOther1(e.target.value)}/>
                 </InputContainer>
           </div>
           <h1 className="header">Other Financing (Dollars)</h1>
@@ -685,22 +1016,22 @@ function ExpenseForm() {
             
             <InputContainer>
               <p className="label">Bank Loans</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setBankLoan(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Other Hire Purchase</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setHirePurchase(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Credit Cards</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setCreditCard(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
                   <p className="label">Other</p>
-                  <input className="text-input"/>
+                  <input className="text-input" onChange={(e)=>props.setOther2(e.target.value)}/>
                 </InputContainer>
           </div>
           <h1 className="header">Other Expenses (Dollars)</h1>
@@ -708,22 +1039,22 @@ function ExpenseForm() {
             
             <InputContainer>
               <p className="label">Food and Groceries </p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setFood(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Transportation and Travel</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setTravel(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Number of Dependents</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setDependents(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
                   <p className="label">Other</p>
-                  <input className="text-input"/>
+                  <input className="text-input" onChange={(e)=>props.setOther3(e.target.value)}/>
                 </InputContainer>
           </div>
       </FormContainer>
@@ -731,7 +1062,8 @@ function ExpenseForm() {
   )
 }
 
-function ReferenceForm() {
+function ReferenceForm(props) {
+
   return (
     <React.Fragment>
       <FormContainer>
@@ -739,32 +1071,32 @@ function ReferenceForm() {
       <div className="row">
             <InputContainer>
               <p className="label">First Name </p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setFirstName1(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Last Name </p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setLastName1(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Street Address</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setAddress1(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Address Cont..</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setAddressCont1(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">City</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setCity1(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Parish</p>
-              <DropdownContainer>
+              <DropdownContainer onChange={(e)=>props.setParish1(e.target.value)}>
                 <option></option>
                 <option>{"Kingston & St Andrew"}</option>
                 <option>{"St Catherine"}</option>
@@ -784,49 +1116,49 @@ function ReferenceForm() {
 
             <InputContainer>
               <p className="label">Home Phone Number</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setHome1(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Mobile Phone Number</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setMobile1(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Relationship to Applicant</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setRelationship1(e.target.value)}/>
             </InputContainer>
         </div>
         <h1 className="header">Reference 2</h1>
         <div className="row">
             <InputContainer>
               <p className="label">First Name </p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setFirstName2(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Last Name </p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setLastName2(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Street Address</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setAddress2(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Address Cont..</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setAddressCont2(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">City</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setCity2(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Parish</p>
-              <DropdownContainer>
+              <DropdownContainer onChange={(e)=>props.setParish2(e.target.value)}>
                 <option></option>
                 <option>{"Kingston & St Andrew"}</option>
                 <option>{"St Catherine"}</option>
@@ -846,17 +1178,17 @@ function ReferenceForm() {
 
             <InputContainer>
               <p className="label">Home Phone Number</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setHome2(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Mobile Phone Number</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setMobile2(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Relationship to Applicant</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setRelationship2(e.target.value)}/>
             </InputContainer>
         </div>
       </FormContainer>
@@ -864,7 +1196,7 @@ function ReferenceForm() {
   )
 }
 
-function AgreementForm() {
+function AgreementForm(props) {
   return(
     <React.Fragment>
       <FormContainer>
@@ -878,12 +1210,16 @@ function AgreementForm() {
       <div className="row" style={{width:"40rem"}}>
             <InputContainer>
               <p className="label">Borrower's Name</p>
-              <input className="text-input"/>
+              <input className="text-input" onChange={(e)=>props.setBorrower(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
               <p className="label">Date (MM/DD/YYYY) </p>
-              <input className="text-input"/>
+              <div className="day-input">
+              <DatePicker
+					      value={props.agreementDate}
+					      onChange={value => props.setAgreementDate(value)} />
+             </div>
             </InputContainer>
 
         </div>

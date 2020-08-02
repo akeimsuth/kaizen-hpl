@@ -30,6 +30,19 @@ code {
     monospace;
 }
 
+.day-input{
+  height: 2rem;
+  width: 60%;
+  outline: 0;
+  border: 0;
+
+
+}
+
+input:focus{
+  border: 2px solid var(--color-blue-200);
+}
+
 :root {
   /* spacing */
   --space-2: 0.125rem;
