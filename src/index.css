@@ -43,6 +43,13 @@ input:focus{
   border: 2px solid var(--color-blue-200);
 }
 
+.signatureCanvas{
+  border: 1px solid var(--color-gray-500);
+  width: 25rem;
+  height: 10rem;
+}
+
+
 :root {
   /* spacing */
   --space-2: 0.125rem;

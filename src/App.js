@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useRef} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { InputField } from './components/FormComponents';
@@ -13,6 +13,7 @@ import 'react-day-picker/lib/style.css';
 import {formatCurrency} from './helper';
 
 import DatePicker from '@bit/nexxtway.react-rainbow.date-picker';
+import SignaturePad from 'react-signature-canvas';
 
 const Wrapper = styled.div`
   padding: 24px;
@@ -384,66 +385,66 @@ const [deposit,setDeposit] = useState(0);
 const [months,setMonths] = useState(0);
 
 //Employment
-const [employed,setEmployed] = useState();
-const [employedEmployer,setEmployedEmployer] = useState();
-const [employedPhone,setEmployedPhone] = useState();
-const [employedAddress,setEmployedAddress] = useState();
-const [employedAddressCont,setEmployedAddressCont] = useState();
-const [employedCity,setEmployedCity] = useState();
-const [employedParish,setEmployedParish] = useState();
-const [employedPosition,setEmployedPosition] = useState();
-const [employedYears,setEmployedYears] = useState();
-const [employedStatus,setEmployedStatus] = useState();
-const [employedManager,setEmployedManager] = useState();
+const [employed,setEmployed] = useState('');
+const [employedEmployer,setEmployedEmployer] = useState('');
+const [employedPhone,setEmployedPhone] = useState('');
+const [employedAddress,setEmployedAddress] = useState('');
+const [employedAddressCont,setEmployedAddressCont] = useState('');
+const [employedCity,setEmployedCity] = useState('');
+const [employedParish,setEmployedParish] = useState('');
+const [employedPosition,setEmployedPosition] = useState('');
+const [employedYears,setEmployedYears] = useState('');
+const [employedStatus,setEmployedStatus] = useState('');
+const [employedManager,setEmployedManager] = useState('');
 
 //Gross
-const [grossIncome,setGrossIncome] = useState();
-const [grossOvertime,setGrossOvertime] = useState();
-const [grossBonus,setGrossBonus] = useState();
-const [grossCommission,setGrossCommission] = useState();
-const [grossStipend,setGrossStipend] = useState();
+const [grossIncome,setGrossIncome] = useState(0);
+const [grossOvertime,setGrossOvertime] = useState(0);
+const [grossBonus,setGrossBonus] = useState(0);
+const [grossCommission,setGrossCommission] = useState(0);
+const [grossStipend,setGrossStipend] = useState(0);
 
 //Expense
-const [presentRent, setPresentRent] = useState();
-const [previousRent, setPreviousRent] = useState();
-const [electricity, setElectricity] = useState();
-const [internet, setInternet] = useState();
-const [water, setWater] = useState();
-const [other1, setOther1] = useState();
-const [bankLoan, setBankLoan] = useState();
-const [hirePurchase, setHirePurchase] = useState();
-const [creditCard, setCreditCard] = useState();
-const [other2, setOther2] = useState();
-const [food, setFood] = useState();
-const [travel, setTravel] = useState();
-const [dependents, setDependents] = useState();
-const [other3, setOther3] = useState();
+const [presentRent, setPresentRent] = useState(0);
+const [previousRent, setPreviousRent] = useState(0);
+const [electricity, setElectricity] = useState(0);
+const [internet, setInternet] = useState(0);
+const [water, setWater] = useState(0);
+const [other1, setOther1] = useState(0);
+const [bankLoan, setBankLoan] = useState(0);
+const [hirePurchase, setHirePurchase] = useState(0);
+const [creditCard, setCreditCard] = useState(0);
+const [other2, setOther2] = useState(0);
+const [food, setFood] = useState(0);
+const [travel, setTravel] = useState(0);
+const [dependents, setDependents] = useState(0);
+const [other3, setOther3] = useState(0);
 
 //Reference
-const [firstName1,setFirstName1] = useState();
-const [lastName1,setLastName1] = useState();
-const [address1,setAddress1] = useState();
-const [addressCont1,setAddressCont1] = useState();
-const [city1,setCity1] = useState();
-const [parish1,setParish1] = useState();
-const [home1,setHome1] = useState();
-const [mobile1,setMobile1] = useState();
-const [relationship1,setRelationship1] = useState();
+const [firstName1,setFirstName1] = useState('');
+const [lastName1,setLastName1] = useState('');
+const [address1,setAddress1] = useState('');
+const [addressCont1,setAddressCont1] = useState('');
+const [city1,setCity1] = useState('');
+const [parish1,setParish1] = useState('');
+const [home1,setHome1] = useState('');
+const [mobile1,setMobile1] = useState('');
+const [relationship1,setRelationship1] = useState('');
 
-const [firstName2,setFirstName2] = useState();
-const [lastName2,setLastName2] = useState();
-const [address2,setAddress2] = useState();
-const [addressCont2,setAddressCont2] = useState();
-const [city2,setCity2] = useState();
-const [parish2,setParish2] = useState();
-const [home2,setHome2] = useState();
-const [mobile2,setMobile2] = useState();
-const [relationship2,setRelationship2] = useState();
+const [firstName2,setFirstName2] = useState('');
+const [lastName2,setLastName2] = useState('');
+const [address2,setAddress2] = useState('');
+const [addressCont2,setAddressCont2] = useState('');
+const [city2,setCity2] = useState('');
+const [parish2,setParish2] = useState('');
+const [home2,setHome2] = useState('');
+const [mobile2,setMobile2] = useState('');
+const [relationship2,setRelationship2] = useState('');
 
 //Agreement
-const [borrower,setBorrower] = useState();
+const [borrower,setBorrower] = useState('');
 const [agreementDate, setAgreementDate] = useState(new Date());
-
+const [signature, setSignature] = useState(null);
 
 const template_params = {
   "reply_to": "akeimsuth@gmail.com",
@@ -555,7 +556,8 @@ const template_params = {
   <h1 style="color:var(--color-gray-500); font-size:2rem;">Agreement Information</h1>
   <br/>
   <p><strong>Borrower's Name:</strong> ${borrower}</p>
-  <p><strong>Agreement Date:</strong> ${agreementDate.toDateString}</p>
+  <a href="${signature}">Signature</a>
+  <p><strong>Agreement Date:</strong> ${agreementDate.toDateString()}</p>
   `
 }
 
@@ -658,7 +660,7 @@ emailjs.send(service_id, template_id, template_params,"user_2WLtdj8YcLEeotGGpmp4
           {agreement &&
             <React.Fragment>
               <h1 class="heading">Agreement Information</h1>
-            <AgreementForm setBorrower={setBorrower} agreementDate={agreementDate} setAgreementDate={setAgreementDate}/>
+            <AgreementForm setBorrower={setBorrower} agreementDate={agreementDate} setAgreementDate={setAgreementDate} setSignature={setSignature}/>
             <button className="submit" onClick={()=> handleSubmit()}>Submit</button>
           </React.Fragment>
           }
@@ -770,7 +772,7 @@ function ApplicantForm(props) {
 
             <InputContainer>
               <p className="label">ID Number</p>
-              <input className="text-input" type="number" onChange={(e)=>props.setIdNumber(e.target.value)}/>
+              <input className="text-input" type="text" onChange={(e)=>props.setIdNumber(e.target.value)}/>
             </InputContainer>
 
             <InputContainer>
@@ -783,10 +785,10 @@ function ApplicantForm(props) {
               </DropdownContainer>
             </InputContainer>
 
-            <InputContainer>
+            {/* <InputContainer>
               <p className="label">Upload copies of National ID, Proof of Address, and TRN</p>
               <input className="upload" type="file" multiple onChange={(e)=>props.setFile(e.target.value)}/>
-            </InputContainer>
+            </InputContainer> */}
           </div>
         </FormContainer>
       </React.Fragment>
@@ -917,10 +919,10 @@ function EmploymentForm(props) {
               <input className="text-input" onChange={(e)=>props.setEmployedPosition(e.target.value)}/>
             </InputContainer>
 
-            <InputContainer>
+            {/* <InputContainer>
               <p className="label">Upload copies of Job Letter, Pay Slips, Other Employment Verification</p>
               <input className="upload" type="file" multiple/>
-            </InputContainer>
+            </InputContainer> */}
       </div>
       </FormContainer>
     </React.Fragment>
@@ -959,10 +961,10 @@ function GrossForm(props) {
               <input className="text-input" onChange={(e)=>props.setGrossStipend(e.target.value)}/>
             </InputContainer>
 
-            <InputContainer>
+            {/* <InputContainer>
                   <p className="label">Upload proof of income </p>
                   <input className="upload" type="file" multiple/>
-                </InputContainer>
+                </InputContainer> */}
         </div>
       </FormContainer>
   </React.Fragment>
@@ -1197,6 +1199,12 @@ function ReferenceForm(props) {
 }
 
 function AgreementForm(props) {
+  
+  const sigCanvas = useRef(null);
+  const clear = () => sigCanvas.current.clear();
+  
+  const save = () => props.setSignature(sigCanvas.current.toDataURL());
+  
   return(
     <React.Fragment>
       <FormContainer>
@@ -1207,7 +1215,18 @@ function AgreementForm(props) {
        You also agree to pay all fees and costs associated with the processing of this loan. 
        We can also obtain and/or give information about you to credit bureaus and other credit grantors as permitted by law.
         You also request and authorise us to send you information about other products and services of the Kaizen Group of Companies. </h1>
+        <SignaturePad
+              ref={sigCanvas}
+              canvasProps={{
+                className: "signatureCanvas"
+              }}
+            />
+            <div style={{width:"5rem"}}>
+              <button onClick={save}>save</button>
+              <button onClick={clear}>clear</button>
+            </div>
       <div className="row" style={{width:"40rem"}}>
+         
             <InputContainer>
               <p className="label">Borrower's Name</p>
               <input className="text-input" onChange={(e)=>props.setBorrower(e.target.value)}/>
