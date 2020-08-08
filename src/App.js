@@ -1,4 +1,4 @@
-import React,{useState,useRef} from 'react';
+import React,{useState,useRef,useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { InputField } from './components/FormComponents';
@@ -447,9 +447,9 @@ const [agreementDate, setAgreementDate] = useState(new Date());
 const [signature, setSignature] = useState(null);
 
 const template_params = {
-  "reply_to": "akeimsuth@gmail.com",
+  "reply_to": "hpapplications@kaizengroupja.com",
   "from_name": firstName+" "+lastName,
-  "to_name": "Akeim Sutherland",
+  "to_name": "Webdealsja",
   "message_html": `
   
   <h1 style="color:var(--color-gray-500); font-size:2rem;">Application Information</h1>
@@ -571,6 +571,19 @@ emailjs.send(service_id, template_id, template_params,"user_2WLtdj8YcLEeotGGpmp4
  }
 
 
+ useEffect(() => {
+    
+      axios.get("https://hpl-server.herokuapp.com/testAPI").then(res => console.log(res.data))
+      // axios.post("https://hpl-server.herokuapp.com:8080/fileUpload",{
+      //   name: "Akeim SUtherland",
+      //   email:"fartnucks@gmail.com"
+      // }).then(
+      //   console.log("Sent "+signature)
+      // )
+      // .catch(error => console.log(error))
+    
+
+ },[])
 
 
 
