@@ -12,7 +12,7 @@ import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 import {formatCurrency} from './helper';
 
-import DatePicker from '@bit/nexxtway.react-rainbow.date-picker';
+import DatePicker from 'react-date-picker';
 import SignaturePad from 'react-signature-canvas';
 
 const Wrapper = styled.div`

@@ -4,7 +4,6 @@
   "private": true,
   "proxy": "http://localhost:3001",
   "dependencies": {
-    "@bit/nexxtway.react-rainbow.date-picker": "^1.10.0",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "@react-pdf/renderer": "^1.6.10",
@@ -14,6 +13,7 @@
     "axios": "^0.19.2",
     "emailjs-com": "^2.6.3",
     "react": "^16.13.1",
+    "react-date-picker": "^8.0.1",
     "react-day-picker": "^7.4.8",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.0.2",
