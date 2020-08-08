@@ -556,7 +556,6 @@ const template_params = {
   <h1 style="color:var(--color-gray-500); font-size:2rem;">Agreement Information</h1>
   <br/>
   <p><strong>Borrower's Name:</strong> ${borrower}</p>
-  <a href="${signature}">Signature</a>
   <p><strong>Agreement Date:</strong> ${agreementDate.toDateString()}</p>
   `
 }
@@ -573,21 +572,24 @@ const handleSubmit = () => {
 
  const [success,setSuccess] = useState('');
 
-//  useEffect(() => {
+ useEffect(() => {
     
-      
-//       axios.post("http://localhost:9000/sendEmail",{
-//         "from": "akeimsuth@gmail.com",
-//         "to": "akeimsuth@gmail.com",
-//         "subject": "Sending Email using Express.js and React",
-//         "text": "I'm loving full stack"
-//       }).then(
-//         console.log("Sent Email")
-//       )
-//       .catch(error => console.log(error))
+      if(signature !== ''){
+        axios.post("http://localhost:9000/sendEmail",{
+          "from": "akeimsuth@gmail.com",
+          "to": "akeimsuth@gmail.com",
+          "subject": "Sending Email using Express.js and React",
+          "text": "I'm loving full stack",
+          "amp": `<h6>${signature}</h6>`
+        }).then(
+          console.log("Sent Email")
+        )
+        .catch(error => console.log(error))
+      }
+
     
 
-//  },[])
+ },[signature])
 
 
 
@@ -1233,14 +1235,14 @@ function AgreementForm(props) {
   return(
     <React.Fragment>
       <FormContainer>
-      <h1 className="header">By signing below, you affirm that the information you have given on this Application form, where applicable,
+      <h1 className="header">By entering your name below, you affirm that the information you have given on this Application form, where applicable,
        is true and complete and forms a part of this Application and that you have not withheld any information. 
        We will rely on the information you have given us to decide on your Application. 
        You authorise us to obtain further information about you and to check and verify the information you have given us. 
        You also agree to pay all fees and costs associated with the processing of this loan. 
        We can also obtain and/or give information about you to credit bureaus and other credit grantors as permitted by law.
         You also request and authorise us to send you information about other products and services of the Kaizen Group of Companies. </h1>
-        <SignaturePad
+        {/* <SignaturePad
               ref={sigCanvas}
               canvasProps={{
                 className: "signatureCanvas"
@@ -1249,7 +1251,7 @@ function AgreementForm(props) {
             <div style={{width:"5rem"}}>
               <button onClick={save}>save</button>
               <button onClick={clear}>clear</button>
-            </div>
+            </div> */}
       <div className="row" style={{width:"40rem"}}>
          
             <InputContainer>
