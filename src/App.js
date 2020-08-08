@@ -363,23 +363,23 @@ const changeAgreement = () => {
     setReference(false);
     setAgreement(true);
 }
-const [firstName,setFirstName] = useState('Jason');
-const [initial,setInitial] = useState('J');
-const [lastName,setLastName] = useState('Statham');
-const [trn,setTrn] = useState('383829292002');
+const [firstName,setFirstName] = useState('');
+const [initial,setInitial] = useState('');
+const [lastName,setLastName] = useState('');
+const [trn,setTrn] = useState('');
 const [date,setDate] = useState(new Date());
-const [address,setAddress] = useState('Statham');
-const [addressCont,setAddressCont] = useState('Statham');
-const [city,setCity] = useState('Statham');
-const [parish,setParish] = useState('Statham');
-const [homeNumber,setHomeNumber] = useState('Statham');
-const [mobileNumber,setMobileNumber] = useState('Statham');
-const [email,setEmail] = useState('Statham');
-const [id,setId] = useState('Statham');
-const [idNumber,setIdNumber] = useState('Statham');
-const [marital,setMarital] = useState('Statham');
-const [productName,setProductName] = useState('Statham');
-const [sku,setSKU] = useState('Statham');
+const [address,setAddress] = useState('');
+const [addressCont,setAddressCont] = useState('');
+const [city,setCity] = useState('');
+const [parish,setParish] = useState('');
+const [homeNumber,setHomeNumber] = useState('');
+const [mobileNumber,setMobileNumber] = useState('');
+const [email,setEmail] = useState('');
+const [id,setId] = useState('');
+const [idNumber,setIdNumber] = useState('');
+const [marital,setMarital] = useState('');
+const [productName,setProductName] = useState('');
+const [sku,setSKU] = useState('');
 const [value,setValue] = useState(0);
 const [deposit,setDeposit] = useState(0);
 const [months,setMonths] = useState(0);
@@ -447,7 +447,7 @@ const [agreementDate, setAgreementDate] = useState(new Date());
 const [signature, setSignature] = useState(null);
 
 const template_params = {
-  "reply_to": "hpapplications@kaizengroupja.com",
+  "reply_to": email,
   "from_name": firstName+" "+lastName,
   "to_name": "Webdealsja",
   "message_html": `
@@ -491,40 +491,40 @@ const template_params = {
 
   <h1 style="color:var(--color-gray-500); font-size:2rem;">Gross Monthly Income</h1>
   <br/>
-  <p><strong>Net Monthly Income (Dollars):</strong> ${grossIncome}</p>
-  <p><strong>Overtime (Dollars):</strong> ${grossOvertime}</p>
-  <p><strong>Bonuses (Dollars):</strong> ${grossBonus}</p>
-  <p><strong>Commissions (Dollars):</strong> ${grossCommission}</p>
-  <p><strong>Stipends/Allowances (Dollars):</strong> ${grossStipend}</p>
+  <p><strong>Net Monthly Income (Dollars):</strong> ${formatCurrency(grossIncome)}</p>
+  <p><strong>Overtime (Dollars):</strong> ${formatCurrency(grossOvertime)}</p>
+  <p><strong>Bonuses (Dollars):</strong> ${formatCurrency(grossBonus)}</p>
+  <p><strong>Commissions (Dollars):</strong> ${formatCurrency(grossCommission)}</p>
+  <p><strong>Stipends/Allowances (Dollars):</strong> ${formatCurrency(grossStipend)}</p>
   <br/>
   <h1 style="color:var(--color-gray-500); font-size:2rem;">Monthly Expense</h1>
   <br/>
 
   <h1 style="color:var(--color-gray-500); font-size:1rem;">Rent or Mortgage (Dollars)</h1>
   <br/>
-  <p><strong>Present:</strong> ${presentRent}</p>
-  <p><strong>Previous:</strong> ${previousRent}</p>
+  <p><strong>Present:</strong> ${formatCurrency(presentRent)}</p>
+  <p><strong>Previous:</strong> ${formatCurrency(previousRent)}</p>
   <h1 style="color:var(--color-gray-500); font-size:1rem;">Utilities (Dollars)</h1>
   <br/>
-  <p><strong>Electricity (Dollars):</strong> ${electricity}</p>
-  <p><strong>Internet Service Providers (Dollars):</strong> ${internet}</p>
-  <p><strong>Water (Dollars):</strong> ${water}</p>
-  <p><strong>Other (Dollars):</strong> ${other1}</p>
+  <p><strong>Electricity (Dollars):</strong> ${formatCurrency(electricity)}</p>
+  <p><strong>Internet Service Providers (Dollars):</strong> ${formatCurrency(internet)}</p>
+  <p><strong>Water (Dollars):</strong> ${formatCurrency(water)}</p>
+  <p><strong>Other (Dollars):</strong> ${formatCurrency(other1)}</p>
   <br/>
 
   <h1 style="color:var(--color-gray-500); font-size:1rem;">Other Financing (Dollars)</h1>
   <br/>
-  <p><strong>Bank Loans:</strong> ${bankLoan}</p>
-  <p><strong>Other Hire Purchase:</strong> ${hirePurchase}</p>
-  <p><strong>Credit Cards:</strong> ${creditCard}</p>
-  <p><strong>Other:</strong> ${other2}</p>
+  <p><strong>Bank Loans:</strong> ${formatCurrency(bankLoan)}</p>
+  <p><strong>Other Hire Purchase:</strong> ${formatCurrency(hirePurchase)}</p>
+  <p><strong>Credit Cards:</strong> ${formatCurrency(creditCard)}</p>
+  <p><strong>Other:</strong> ${formatCurrency(other2)}</p>
 
   <h1 style="color:var(--color-gray-500); font-size:1rem;">Other Expenses (Dollars)</h1>
   <br/>
-  <p><strong>Food and Groceries:</strong> ${food}</p>
-  <p><strong>Transportation and Travel:</strong> ${travel}</p>
+  <p><strong>Food and Groceries:</strong> ${formatCurrency(food)}</p>
+  <p><strong>Transportation and Travel:</strong> ${formatCurrency(travel)}</p>
   <p><strong>Number of Dependents:</strong> ${dependents}</p>
-  <p><strong>Other:</strong> ${other3}</p>
+  <p><strong>Other:</strong> ${formatCurrency(other3)}</p>
   <br/>
   <h1 style="color:var(--color-gray-500); font-size:2rem;">Reference Information</h1>
   <br/>
@@ -567,23 +567,27 @@ const template_id = "template_UqjlfSWm";
 const handleSubmit = () => {
 
 
-emailjs.send(service_id, template_id, template_params,"user_2WLtdj8YcLEeotGGpmp4R");
+  emailjs.send(service_id, template_id, template_params,"user_2WLtdj8YcLEeotGGpmp4R");
+  setSuccess("Email Sent!")
  }
 
+ const [success,setSuccess] = useState('');
 
- useEffect(() => {
+//  useEffect(() => {
     
-      axios.get("https://hpl-server.herokuapp.com/testAPI").then(res => console.log(res.data))
-      // axios.post("https://hpl-server.herokuapp.com:8080/fileUpload",{
-      //   name: "Akeim SUtherland",
-      //   email:"fartnucks@gmail.com"
-      // }).then(
-      //   console.log("Sent "+signature)
-      // )
-      // .catch(error => console.log(error))
+      
+//       axios.post("http://localhost:9000/sendEmail",{
+//         "from": "akeimsuth@gmail.com",
+//         "to": "akeimsuth@gmail.com",
+//         "subject": "Sending Email using Express.js and React",
+//         "text": "I'm loving full stack"
+//       }).then(
+//         console.log("Sent Email")
+//       )
+//       .catch(error => console.log(error))
     
 
- },[])
+//  },[])
 
 
 
@@ -673,8 +677,16 @@ emailjs.send(service_id, template_id, template_params,"user_2WLtdj8YcLEeotGGpmp4
           {agreement &&
             <React.Fragment>
               <h1 class="heading">Agreement Information</h1>
+              {success === '' ? 
+              <>
             <AgreementForm setBorrower={setBorrower} agreementDate={agreementDate} setAgreementDate={setAgreementDate} setSignature={setSignature}/>
             <button className="submit" onClick={()=> handleSubmit()}>Submit</button>
+            </>
+            :
+            <img src="email_success.svg"/>
+          }
+            
+            
           </React.Fragment>
           }
          </MainContent>
